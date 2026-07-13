@@ -15,17 +15,14 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    // 1. Separate passive scroll event just for the navbar state
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // 2. Optimized section observer
     const sections = ["features", "how-it-works", "templates"];
 
     const observerOptions = {
-      // This acts like your "100px" threshold rule
       rootMargin: "-100px 0px -80% 0px",
       threshold: 0,
     };
