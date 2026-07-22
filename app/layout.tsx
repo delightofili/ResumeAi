@@ -67,7 +67,7 @@ export const metadata: Metadata = {
       "DelResumeAI is a free AI resume builder that helps you create professional, ATS-friendly resumes with AI suggestions, modern templates, and instant PDF export.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://delresumeai.vercel.app/og-image.png",
         width: 1200,
         height: 630,
         alt: "DelResumeAI",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     title: "DelResumeAI — Build Your Resume with AI",
     description:
       "Create a professional, ATS-optimized resume in minutes with AI-powered suggestions.",
-    images: ["/og-image.png"],
+    images: ["https://delresumeai.vercel.app/og-image.png"],
   },
 
   robots: {
