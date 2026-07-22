@@ -150,7 +150,7 @@ export default function HeroSection() {
 
                 {/* right panel - resume preview */}
                 <div className="col-span-3 bg-white rounded-xl p-3 overflow-hidden text-left">
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-2.5 mb-2">
+                  <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-lg p-2.5 mb-2">
                     <div className="text-white font-bold text-xs">
                       Delightsome Ofili
                     </div>
