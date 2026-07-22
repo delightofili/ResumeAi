@@ -8,7 +8,7 @@ const InterFont = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://resumeAi.vercel.app"),
+  metadataBase: new URL("https://delresumeai.vercel.app"),
   title: {
     default: "DelResumeAI — Build Your Resume with AI",
     template: "%s | DelResumeAI",
@@ -16,15 +16,46 @@ export const metadata: Metadata = {
   description:
     "Create a professional, ATS-optimized resume in minutes with AI-powered suggestions. Stand out from the crowd.",
   keywords: [
-    "resume builder",
-    "ai resume builder",
-    "cv builder",
-    "ats resume",
-    "professional resume",
-    "delresumeai",
+    "AI Resume Builder",
+    "Resume Builder",
+    "CV Builder",
+    "Free Resume Builder",
+    "ATS Resume",
+    "Professional Resume",
+    "Resume Generator",
+    "Online Resume Builder",
+    "Resume Templates",
+    "Resume PDF",
+    "DelResumeAI",
   ],
   authors: [{ name: "Delightsome Ofili" }],
   creator: "Delightsome Ofili",
+
+  alternates: {
+    canonical: "https://delresumeai.vercel.app",
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+
+  themeColor: "#0a0f1e",
+
+  category: "technology",
+
+  applicationName: "DelResumeAI",
+
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "DelResumeAI",
+  },
+
+  verification: {
+    google: "verification-code",
+  },
 
   openGraph: {
     type: "website",
@@ -33,7 +64,7 @@ export const metadata: Metadata = {
     siteName: "DelResumeAI",
     title: "DelResumeAI — Build Your Resume with AI",
     description:
-      "Create a professional, ATS-optimized resume in minutes with AI-powered suggestions.",
+      "DelResumeAI is a free AI resume builder that helps you create professional, ATS-friendly resumes with AI suggestions, modern templates, and instant PDF export.",
     images: [
       {
         url: "/og-image.png",
@@ -43,6 +74,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
     title: "DelResumeAI — Build Your Resume with AI",
@@ -50,9 +82,17 @@ export const metadata: Metadata = {
       "Create a professional, ATS-optimized resume in minutes with AI-powered suggestions.",
     images: ["/og-image.png"],
   },
+
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -64,6 +104,26 @@ export default function RootLayout({
   return (
     <html lang="en" className={` ${InterFont.variable}  scroll-smooth`}>
       <body className="min-h-full flex flex-col bg-[#0a0f1e] antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "DelResumeAI",
+              applicationCategory: "BusinessApplication",
+              operatingSystem: "Web",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
+              },
+              url: "https://delresumeai.vercel.app",
+              description:
+                "AI-powered resume builder for creating ATS-friendly resumes.",
+            }),
+          }}
+        />
         {children}
       </body>
     </html>
