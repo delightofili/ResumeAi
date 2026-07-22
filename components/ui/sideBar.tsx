@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const steps = [
   { id: 0, label: "Personal info", icon: "◉" },
@@ -28,7 +29,7 @@ export default function SideBar({
   const progress = Math.round((completedSteps.length / steps.length) * 100);
   return (
     <aside className="h-full flex flex-col p-5 overflow-y-auto">
-      <div className="flex items-center gap-2 mb-8">
+      <Link href="/" className="flex items-center gap-2 mb-8">
         <div className="w-7 h-7 rounded-lg bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center">
           <span className="text-white text-xs">✦</span>
         </div>
@@ -38,7 +39,7 @@ export default function SideBar({
             ResumeAI
           </span>
         </span>
-      </div>
+      </Link>
 
       {/* progress */}
 

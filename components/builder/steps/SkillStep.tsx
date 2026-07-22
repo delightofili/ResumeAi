@@ -1,6 +1,7 @@
 "use client";
 
 import { Resume } from "@/lib/types";
+import { useAI } from "@/lib/useAI";
 import { useState } from "react";
 
 interface skillStepProp {
@@ -16,6 +17,7 @@ export default function SkillStep({
 }: skillStepProp) {
   const [isAdding, setIsAdding] = useState(false);
   const [newSkill, setNewSkill] = useState("");
+  const { loading, suggestSkills } = useAI();
   return (
     <div className="p-8">
       <h2 className="text-xl font-semibold text-white mb-1">Skills</h2>
@@ -50,6 +52,21 @@ export default function SkillStep({
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div className="flex flex-col gap-2">{skill}</div>
             </div>
+            <button
+              type="button"
+              onClick={async () => {
+                const result = await suggestSkills(resume.personal.title);
+                if (result) {
+                  result.split(",").forEach((skill) => addSkill(skill.trim()));
+                }
+              }}
+              disabled={loading === "suggest_skills"}
+              className="mt-4 w-full py-2.5 rounded-xl border border-dashed border-purple-500/30 text-purple-400 text-sm hover:border-purple-500/60 disabled:opacity-50 transition-all"
+            >
+              {loading === "suggest_skills"
+                ? "Getting suggestions..."
+                : "✦ Suggest skills with AI"}
+            </button>
           </div>
         ))}
         {isAdding ? (

@@ -1,11 +1,42 @@
 "use client";
 import { Resume } from "@/lib/types";
+import { useState } from "react";
+import { useAI } from "@/lib/useAI";
 
 interface ResumePreviewProps {
   resume: Resume;
 }
 
 export default function ResumePreview({ resume }: ResumePreviewProps) {
+  const { loading, getATSScore } = useAI();
+  const [atsResult, setAtsResult] = useState<{
+    score: number;
+    feedback: string[];
+    strengths: string[];
+  } | null>(null);
+
+  async function downloadPDF(name: string) {
+    const element = document.getElementById("resume-preview");
+    if (!element) return;
+
+    const html2canvas = (await import("html2canvas-pro")).default;
+    const jsPDF = (await import("jspdf")).default;
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`${name || "resume"}-delresumeai.pdf`);
+  }
+
   return (
     <div className="p-4 h-full flex flex-col">
       <div className="flex items-center justify-between mb-3">
@@ -16,6 +47,68 @@ export default function ResumePreview({ resume }: ResumePreviewProps) {
           {resume.template}
         </span>
       </div>
+
+      <div className="mb-3">
+        <button
+          onClick={async () => {
+            const result = await getATSScore(resume);
+            if (result) setAtsResult(result);
+          }}
+          disabled={loading === "ats_score"}
+          className="w-full py-2 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/20 text-blue-400 text-xs hover:border-blue-500/40 disabled:opacity-50 transition-all"
+        >
+          {loading === "ats_score" ? "Analyzing..." : "✦ Check ATS score"}
+        </button>
+        {atsResult && (
+          <div className="mt-3 bg-white/5 border border-white/10 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs text-slate-400">ATS Score</span>
+              <span
+                className={`text-2xl font-bold ${
+                  atsResult.score >= 80
+                    ? "text-green-400"
+                    : atsResult.score >= 60
+                      ? "text-yellow-400"
+                      : "text-red-400"
+                }`}
+              >
+                {atsResult.score}%
+              </span>
+            </div>
+            {atsResult.strengths.length > 0 && (
+              <div className="mb-2">
+                <p className="text-[10px] text-green-400 uppercase tracking-wider mb-1">
+                  Strengths
+                </p>
+                {atsResult.strengths.map((s, i) => (
+                  <p key={i} className="text-[11px] text-slate-400">
+                    ✓ {s}
+                  </p>
+                ))}
+              </div>
+            )}
+            {atsResult.feedback.length > 0 && (
+              <div>
+                <p className="text-[10px] text-yellow-400 uppercase tracking-wider mb-1">
+                  Improve
+                </p>
+                {atsResult.feedback.map((f, i) => (
+                  <p key={i} className="text-[11px] text-slate-400">
+                    → {f}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <button
+        onClick={() => downloadPDF(resume.personal.name)}
+        className="block w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium text-center hover:opacity-90 transition-all mb-3"
+      >
+        ↓ Download PDF
+      </button>
 
       {/* resume paper */}
       <div className="flex-1 overflow-y-auto">

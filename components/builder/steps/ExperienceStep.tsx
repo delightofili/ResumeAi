@@ -1,5 +1,6 @@
 "use client";
 import { Resume } from "@/lib/types";
+import { useAI } from "@/lib/useAI";
 
 interface ExperienceStepProps {
   resume: Resume;
@@ -18,6 +19,7 @@ export default function ExperienceStep({
   updateExperience,
   removeExperience,
 }: ExperienceStepProps) {
+  const { loading, improveDescription } = useAI();
   return (
     <div className="p-8">
       <h2 className="text-xl font-semibold text-white mb-1">Work Experience</h2>
@@ -146,6 +148,29 @@ export default function ExperienceStep({
                 rows={4}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all resize-none"
               />
+              <button
+                type="button"
+                onClick={async () => {
+                  const improved = await improveDescription(
+                    exp.role,
+                    exp.company,
+                    exp.description,
+                  );
+                  if (improved)
+                    updateExperience(exp.id, "description", improved);
+                }}
+                disabled={loading === "improve_description"}
+                className="mt-2 flex items-center gap-2 text-xs text-blue-400 hover:text-blue-300 disabled:opacity-50 transition-colors"
+              >
+                {loading === "improve_description" ? (
+                  <>
+                    <span className="w-3 h-3 border border-blue-400 border-t-transparent rounded-full animate-spin" />
+                    Improving...
+                  </>
+                ) : (
+                  <>✦ Improve with AI</>
+                )}
+              </button>
             </div>
           </div>
         ))}

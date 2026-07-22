@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Resume } from "@/lib/types";
+import { useAI } from "@/lib/useAI";
 
 interface personalInfoProps {
   resume: Resume;
@@ -45,6 +46,8 @@ export default function PersonalInfo({
     updatePersonal(field, value);
     validateField(field, value);
   };
+
+  const { loading, generateSummary } = useAI();
 
   return (
     <div className="p-8">
@@ -182,13 +185,35 @@ export default function PersonalInfo({
           <label className="text-xs text-slate-400 font-medium uppercase tracking-wider">
             Summary
           </label>
-          <input
-            type="text"
+          <textarea
             value={resume.personal.summary}
             onChange={(e) => updatePersonal("summary", e.target.value)}
             placeholder="placeholder"
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/8 transition-all"
           />
+          <button
+            type="button"
+            onClick={async () => {
+              const summary = await generateSummary(
+                resume.personal.name,
+                resume.personal.title,
+                resume.skills,
+                resume.experience.length,
+              );
+              if (summary) updatePersonal("summary", summary);
+            }}
+            disabled={loading === "generate_summary"}
+            className="mt-2 flex items-center gap-2 text-xs text-purple-400 hover:text-purple-300 disabled:opacity-50 transition-colors"
+          >
+            {loading === "generate_summary" ? (
+              <>
+                <span className="w-3 h-3 border border-purple-400 border-t-transparent rounded-full animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>✦ Generate with AI</>
+            )}
+          </button>
         </div>
       </form>
     </div>

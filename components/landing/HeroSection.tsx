@@ -152,7 +152,7 @@ export default function HeroSection() {
                 <div className="col-span-3 bg-white rounded-xl p-3 overflow-hidden text-left">
                   <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-2.5 mb-2">
                     <div className="text-white font-bold text-xs">
-                      Nonso Ofili
+                      Delightsome Ofili
                     </div>
                     <div className="text-blue-200 text-[9px]">
                       Fullstack Developer

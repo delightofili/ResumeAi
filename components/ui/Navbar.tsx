@@ -118,12 +118,6 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/builder"
-            className="text-sm text-slate-400 hover:text-white transition-colors"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/builder"
             className="text-sm font-medium px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-opacity"
           >
             Get started free
